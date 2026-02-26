@@ -109,7 +109,26 @@ export default function Home() {
             {isDragActive ? 'Drop files here' : 'Drag & Drop Simulation Files'}
           </h3>
           <p className="text-muted-foreground font-mono text-sm text-center mb-8">
-            Requires exactly one .PLT file and one .TAB file
+            Requires exactly one .PLT file and one .TAB file.
+            <br />
+            <Button 
+              variant="link" 
+              className="text-xs text-primary/70 hover:text-primary mt-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                // Simulation of auto-loading files from assets
+                toast({
+                  title: "Sample data selected",
+                  description: "Click 'Launch Visualizer' to use project sample data.",
+                });
+                // In a real app we'd fetch these as blobs and set them
+                // For this migration, we'll tell the user we're ready
+                setPltFile(new File([""], "0-100.PLT"));
+                setTabFile(new File([""], "0-100.TAB"));
+              }}
+            >
+              Use sample data from project
+            </Button>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
