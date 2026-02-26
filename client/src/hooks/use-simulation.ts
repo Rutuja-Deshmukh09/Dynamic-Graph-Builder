@@ -24,15 +24,15 @@ export function useUploadSession() {
     mutationFn: async (formData: FormData) => {
       const res = await fetch(api.upload.path, {
         method: api.upload.method,
-        body: formData, // FormData automatically sets correct multipart headers
+        body: formData,
       });
       
-      const data = await res.json();
-      
       if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Failed to upload files');
       }
       
+      const data = await res.json();
       return parseWithLogging(api.upload.responses[200], data, "upload");
     },
   });
