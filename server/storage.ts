@@ -1,37 +1,39 @@
-import { type User, type InsertUser } from "@shared/schema";
 import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
+export interface SessionData {
+  id: string;
+  metadata: any;
+  tabData: any[];
+  pltData: any[];
+  validation: any;
+}
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  saveSession(data: Omit<SessionData, "id">): string;
+  getSession(id: string): SessionData | undefined;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private sessions: Map<string, SessionData>;
 
   constructor() {
-    this.users = new Map();
+    this.sessions = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
+  saveSession(data: Omit<SessionData, "id">): string {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    this.sessions.set(id, { ...data, id });
+    
+    // Auto-expire after 1 hour
+    setTimeout(() => {
+      this.sessions.delete(id);
+    }, 60 * 60 * 1000);
+    
+    return id;
+  }
+
+  getSession(id: string): SessionData | undefined {
+    return this.sessions.get(id);
   }
 }
 
