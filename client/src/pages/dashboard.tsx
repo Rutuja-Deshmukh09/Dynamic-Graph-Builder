@@ -149,7 +149,7 @@ export default function Dashboard() {
   if (tsDataC && chartCNode && tsDataC[chartCNode]) {
     const nodeData = tsDataC[chartCNode];
     if (nodeData.plt) {
-      tracesA.push({ // Using primary axis
+      tracesC.push({
         x: nodeData.plt.map(d => d.time),
         y: nodeData.plt.map(d => d.value),
         name: `PLT`,

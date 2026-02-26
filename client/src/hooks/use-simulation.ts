@@ -1,14 +1,13 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { z } from "zod";
-import { 
-  api, 
-  buildUrl,
+import { api, buildUrl } from "@shared/routes";
+import {
   metadataSchema,
   validationSchema,
   timeseriesDataPointSchema,
   snapshotDataPointSchema,
   tableRowSchema
-} from "@shared/routes";
+} from "@shared/schema";
 
 // Utility to log Zod parsing errors
 function parseWithLogging<T>(schema: z.ZodSchema<T>, data: unknown, label: string): T {

@@ -51,8 +51,8 @@ export default function Home() {
     }
 
     const formData = new FormData();
-    formData.append("files", pltFile);
-    formData.append("files", tabFile);
+    formData.append("plt", pltFile);
+    formData.append("tab", tabFile);
 
     uploadMutation.mutate(formData, {
       onSuccess: (data) => {
